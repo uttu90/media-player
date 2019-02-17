@@ -1,25 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PlayerWrapper from './PlayerWrapper';
+import getPlayer from './youtubePlayer';
 
 class App extends Component {
+
+  onPlay = () => {
+    this.refs.player.play();
+  }
+
+  onPause = () => {
+    this.refs.player.pause();
+  }
+
+  onSeek = () => {
+    this.refs.player.seekTo(10);
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <PlayerWrapper
+          ref="player"
+          src="lb_3P0evc60"
+          getPlayer={getPlayer}
+          onCanPlay={() => { console.log('ready') }}
+          onPlay={() => { console.log('playing') }}
+          onTimeUpdate={(time) => {console.log(time)}}
+        >
+          <div />
+        </PlayerWrapper>
+        <button onClick={this.onPlay}>play</button>
+        <button onClick={this.onPause}>pause</button>
+        <button onClick={this.onSeek}>seek</button>
       </div>
     );
   }
