@@ -45,14 +45,15 @@ class MediaWrapper extends Component {
       this.playerRef.current.ontimeupdate = () => {
         this.props.onTimeUpdate(this.playerRef.current.currentTime);
       }
-      return this.playerRef.current.src = this.props.src;
-    };
-
-    // Else we should finding the element
-    this.props.getPlayer(this.playerRef.current, this.props)
+      this.player = this.playerRef.current;
+      this.player.src = this.props.src;
+    } else {
+      // Else we should finding the element
+      this.props.getPlayer(this.playerRef.current, this.props)
       .then(player => {
         this.player = player;
       });
+    }
   }
 
   render() {
