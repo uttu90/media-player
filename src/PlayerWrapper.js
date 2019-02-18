@@ -33,6 +33,10 @@ class MediaWrapper extends Component {
     return this.player.currentTime;
   }
 
+  get duration() {
+    return this.player.duration;
+  }
+
   componentDidMount() {
     const playerChildType = React.Children.only(this.props.children).type;
 
