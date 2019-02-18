@@ -21,13 +21,13 @@ class App extends Component {
       <div className="App">
         <PlayerWrapper
           ref="player"
-          src="lb_3P0evc60"
+          src="https://adtima-video-te-vnso-zn-1.zadn.vn/2019/01/157784f2-9380-4b70-8492-bc34f6c8d80b.mp4"
           getPlayer={getPlayer}
           onCanPlay={() => { console.log('ready') }}
           onPlay={() => { console.log('playing') }}
           onTimeUpdate={(time) => {console.log(time)}}
         >
-          <div />
+          <video width={480} height={360} />
         </PlayerWrapper>
         <button onClick={this.onPlay}>play</button>
         <button onClick={this.onPause}>pause</button>
