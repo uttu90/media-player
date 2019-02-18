@@ -55,10 +55,16 @@ export default function(playerRef, props) {
         pause() {
           player.pauseVideo();
         },
-        setTime(time) {
+        set currentTime(time) {
           player.seekTo(time);
           props.onTimeUpdate && props.onTimeUpdate(time);
           stopGettingTime();
+        },
+        get currentTime() {
+          return player.getCurrentTime();
+        },
+        get duration() {
+          return player.getDuration();
         }
       });
     }

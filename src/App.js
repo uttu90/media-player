@@ -13,7 +13,7 @@ class App extends Component {
   }
 
   onSeek = () => {
-    this.refs.player.seekTo(10);
+    this.refs.player.currentTime = 10;
   }
 
   render() {
