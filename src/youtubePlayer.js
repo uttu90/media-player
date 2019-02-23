@@ -62,6 +62,9 @@ export default function(playerRef, props) {
         },
         get currentTime() {
           return player.getCurrentTime();
+        },
+        get duration() {
+          return player.getDuration();
         }
       });
     }

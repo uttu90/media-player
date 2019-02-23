@@ -5,7 +5,6 @@ import PlayerControl from './PlayerControl';
 import getPlayer from './youtubePlayer';
 
 class App extends Component {
-
   render() {
     return (
       <div className="App">

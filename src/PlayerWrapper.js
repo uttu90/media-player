@@ -16,6 +16,7 @@ class PlayerWrapper extends Component {
     super(props);
 
     this.playerRef = React.createRef();
+    this.player = null;
   }
 
   play = () => {
@@ -26,12 +27,24 @@ class PlayerWrapper extends Component {
     this.player.pause();
   }
 
+  set currentTime(time) {
+    this.player.currentTime = time;
+  }
+
   get currentTime() {
     return this.player.currentTime;
   }
 
-  set currentTime(time) {
-    this.player.currentTime = time;
+  get duration() {
+    return this.player.duration;
+  }
+
+  play = () => {
+    this.player.play();
+  }
+
+  pause = () => {
+    this.player.pause();
   }
 
   componentDidMount() {
@@ -39,12 +52,18 @@ class PlayerWrapper extends Component {
 
     // Incase the child is video or audio, just provides media src
     if (MEDIA_TYPES.includes(playerChildType)) {
+      this.playerRef.current.ontimeupdate = () => {
+        this.props.onTimeUpdate(this.playerRef.current.currentTime);
+      }
       this.player = this.playerRef.current;
-    };
-    
-    // Else we should finding the element
-    this.props.getPlayer(this.playerRef.current, this.props)
-      .then(player => this.player = player);
+      this.player.src = this.props.src;
+    } else {
+      // Else we should finding the element
+      this.props.getPlayer(this.playerRef.current, this.props)
+      .then(player => {
+        this.player = player;
+      });
+    }
   }
 
   render() {
