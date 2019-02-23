@@ -3,12 +3,14 @@ import { func, string } from 'prop-types';
 
 const MEDIA_TYPES = ['audio', 'video'];
 
-class MediaWrapper extends Component {
+class PlayerWrapper extends Component {
 
   static propTypes = {
     src: string.isRequired,
     getMedia: func
   }
+
+  static displayName = 'PlayerWrapper'
 
   constructor(props) {
     super(props);
@@ -16,39 +18,33 @@ class MediaWrapper extends Component {
     this.playerRef = React.createRef();
   }
 
+  play = () => {
+    this.player.play();
+  }
+
+  pause = () => {
+    this.player.pause();
+  }
+
+  get currentTime() {
+    return this.player.currentTime;
+  }
+
+  set currentTime(time) {
+    this.player.currentTime = time;
+  }
+
   componentDidMount() {
     const playerChildType = React.Children.only(this.props.children).type;
 
     // Incase the child is video or audio, just provides media src
     if (MEDIA_TYPES.includes(playerChildType)) {
-      this.play = function() { 
-        this.playerRef.current.play()
-      };
-      this.pause = function() {
-        this.playerRef.current.pause()
-      };
-      this.seekTo = function(time) {
-        this.playerRef.current.currentTime = time;
-      };
-      this.playerRef.current.ontimeupdate = () => {
-        this.props.onTimeUpdate(this.playerRef.current.currentTime);
-      }
-      return this.playerRef.current.src = this.props.src;  
+      this.player = this.playerRef.current;
     };
     
     // Else we should finding the element
     this.props.getPlayer(this.playerRef.current, this.props)
-      .then(player => {
-        this.play = function() {
-          player.play()
-        };
-        this.pause = function() {
-          player.pause()
-        };
-        this.seekTo = function(time) {
-          player.setTime(time);
-        }
-      });
+      .then(player => this.player = player);
   }
 
   render() {
@@ -56,10 +52,12 @@ class MediaWrapper extends Component {
     const playerChild = React.Children.only(this.props.children);
 
     return React.cloneElement(playerChild, {
-      ref: this.playerRef,
-      ...remainProps
-    })
+        ref: this.playerRef,
+        ...remainProps,
+      },
+      null
+    )
   }
 }
 
-export default MediaWrapper;
+export default PlayerWrapper;
